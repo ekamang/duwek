@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Aplikasi Keuangan Pribadi</title>
+  <title>Aplikasi Keuangan Pribadi - Duwek</title>
   <!-- Tailwind CSS & Chart.js -->
   <script src="https://cdn.tailwindcss.com"></script>
   <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
@@ -26,180 +26,247 @@
 
     <!-- NAVIGASI TAB -->
     <div class="flex bg-white p-1 rounded-xl shadow-sm text-xs font-semibold justify-between border border-slate-200">
-      <button onclick="switchTab('proposal')" id="tab-proposal" class="tab-btn flex-1 py-2 rounded-lg text-center bg-indigo-600 text-white">1. Proposal</button>
+      <button onclick="switchTab('proposal')" id="tab-proposal" class="tab-btn flex-1 py-2 rounded-lg text-center bg-indigo-600 text-white">1. RAB 1 Bulan</button>
       <button onclick="switchTab('daily')" id="tab-daily" class="tab-btn flex-1 py-2 rounded-lg text-center text-slate-600">2. Harian</button>
       <button onclick="switchTab('savings')" id="tab-savings" class="tab-btn flex-1 py-2 rounded-lg text-center text-slate-600">3. Tabungan</button>
       <button onclick="switchTab('report')" id="tab-report" class="tab-btn flex-1 py-2 rounded-lg text-center text-slate-600">4. Laporan</button>
     </div>
 
-    <!-- TAB 1: PROPOSAL ANGGARAN AWAL BULAN -->
+    <!-- TAB 1: RAB 1 BULAN (RANCANGAN ANGGARAN AWAL) -->
     <section id="sec-proposal" class="tab-content space-y-4">
-      <div class="bg-white p-4 rounded-2xl shadow-sm border border-slate-200">
-        <h2 class="font-bold text-lg text-indigo-900 mb-1"><i class="fa-solid fa-file-signature text-indigo-600 mr-2"></i>Proposal Anggaran Bulanan</h2>
-        <p class="text-xs text-slate-500 mb-4">Rencanakan batas pengeluaran sebelum bulan berjalan dimulai.</p>
-        
-        <form onsubmit="addProposalItem(event)" class="space-y-3">
-          <div>
-            <label class="text-xs font-semibold text-slate-600">Nama Kebutuhan</label>
-            <input type="text" id="prop-item" placeholder="Misal: Belanja Bulanan" required class="w-full p-2.5 text-sm border border-slate-300 rounded-xl focus:ring-2 focus:ring-indigo-500 outline-none">
-          </div>
-          <div class="grid grid-cols-2 gap-2">
+      <div class="bg-white p-4 rounded-2xl shadow-sm border border-slate-200 space-y-4">
+        <div>
+          <h2 class="font-bold text-lg text-indigo-900 mb-1"><i class="fa-solid fa-file-signature text-indigo-600 mr-2"></i>RAB 1 Bulan</h2>
+          <p class="text-xs text-slate-500">Rencanakan estimasi gaji dan perkiraan pengeluaran 1 bulan kedepan.</p>
+        </div>
+
+        <!-- 1. Estimasi Pemasukan Gaji Awal Bulan -->
+        <div class="bg-indigo-50/70 p-3.5 rounded-xl border border-indigo-100 space-y-3">
+          <h3 class="font-bold text-xs text-indigo-900 flex items-center gap-1.5">
+            <i class="fa-solid fa-money-bill-wave text-indigo-600"></i> Estimasi Pemasukan Gaji Bulanan
+          </h3>
+          <form onsubmit="saveSalaryEstimate(event)" class="space-y-2.5">
+            <div class="grid grid-cols-2 gap-2 text-xs">
+              <div>
+                <label class="font-semibold text-slate-600 text-[11px]">Gaji Pokok (Rp)</label>
+                <input type="number" id="sal-pokok" placeholder="0" class="w-full p-2 border border-slate-300 rounded-lg outline-none focus:ring-1 focus:ring-indigo-500">
+              </div>
+              <div>
+                <label class="font-semibold text-slate-600 text-[11px]">Staff (Rp)</label>
+                <input type="number" id="sal-staff" placeholder="0" class="w-full p-2 border border-slate-300 rounded-lg outline-none focus:ring-1 focus:ring-indigo-500">
+              </div>
+              <div>
+                <label class="font-semibold text-slate-600 text-[11px]">Walikelas (Rp)</label>
+                <input type="number" id="sal-walikelas" placeholder="0" class="w-full p-2 border border-slate-300 rounded-lg outline-none focus:ring-1 focus:ring-indigo-500">
+              </div>
+              <div>
+                <label class="font-semibold text-slate-600 text-[11px]">Lain-Lain (Rp)</label>
+                <input type="number" id="sal-lain" placeholder="0" class="w-full p-2 border border-slate-300 rounded-lg outline-none focus:ring-1 focus:ring-indigo-500">
+              </div>
+            </div>
+            <button type="submit" class="w-full bg-indigo-600 hover:bg-indigo-700 text-white font-semibold py-2 rounded-lg text-xs transition">
+              Simpan Estimasi Gaji
+            </button>
+          </form>
+        </div>
+
+        <!-- 2. Rancangan Pengeluaran -->
+        <div class="space-y-3 pt-2">
+          <h3 class="font-bold text-xs text-slate-700"><i class="fa-solid fa-cart-shopping text-indigo-600 mr-1.5"></i>Rancangan Item Pengeluaran</h3>
+          <form onsubmit="addProposalItem(event)" class="space-y-2.5">
             <div>
-              <label class="text-xs font-semibold text-slate-600">Kategori</label>
-              <select id="prop-cat" class="w-full p-2.5 text-sm border border-slate-300 rounded-xl focus:ring-2 focus:ring-indigo-500 outline-none">
+              <input type="text" id="prop-item" placeholder="Nama Kebutuhan (misal: Belanja Bulanan)" required class="w-full p-2.5 text-xs border border-slate-300 rounded-xl outline-none focus:ring-2 focus:ring-indigo-500">
+            </div>
+            <div class="grid grid-cols-2 gap-2">
+              <select id="prop-cat" class="w-full p-2.5 text-xs border border-slate-300 rounded-xl outline-none focus:ring-2 focus:ring-indigo-500">
                 <option value="Makanan">Makanan</option>
                 <option value="Transportasi">Transportasi</option>
                 <option value="Tagihan">Tagihan</option>
                 <option value="Gaya Hidup">Gaya Hidup</option>
                 <option value="Lainnya">Lainnya</option>
               </select>
+              <input type="number" id="prop-limit" placeholder="Batas Uang (Rp)" required class="w-full p-2.5 text-xs border border-slate-300 rounded-xl outline-none focus:ring-2 focus:ring-indigo-500">
             </div>
-            <div>
-              <label class="text-xs font-semibold text-slate-600">Batas Uang (Rp)</label>
-              <input type="number" id="prop-limit" placeholder="1000000" required class="w-full p-2.5 text-sm border border-slate-300 rounded-xl focus:ring-2 focus:ring-indigo-500 outline-none">
-            </div>
+            <button type="submit" class="w-full bg-slate-800 hover:bg-slate-900 text-white font-semibold py-2.5 rounded-xl text-xs transition">
+              + Tambahkan Rancangan
+            </button>
+          </form>
+        </div>
+
+        <!-- Daftar Rancangan -->
+        <div class="pt-2">
+          <div id="proposal-list" class="space-y-2 text-xs"></div>
+        </div>
+
+        <!-- Ringkasan RAB & Sisa Anggaran -->
+        <div class="bg-emerald-50 p-3.5 rounded-xl border border-emerald-200 space-y-1.5 text-xs">
+          <div class="flex justify-between text-slate-600">
+            <span>Total Estimasi Gaji Masuk:</span>
+            <span id="rab-total-income" class="font-bold text-emerald-700">Rp0</span>
           </div>
-          <button type="submit" class="w-full bg-indigo-600 hover:bg-indigo-700 text-white font-semibold py-2.5 rounded-xl text-sm transition">
-            + Tambahkan Rencana
-          </button>
-        </form>
-      </div>
+          <div class="flex justify-between text-slate-600">
+            <span>Total Rancangan Pengeluaran:</span>
+            <span id="rab-total-expense" class="font-bold text-rose-600">-Rp0</span>
+          </div>
+          <div class="border-t border-emerald-200 pt-1.5 flex justify-between font-bold text-slate-800 text-xs">
+            <span>Sisa Anggaran Rancangan:</span>
+            <span id="rab-balance" class="text-indigo-600 text-sm">Rp0</span>
+          </div>
+        </div>
 
-      <!-- Daftar Item Proposal -->
-      <div class="bg-white p-4 rounded-2xl shadow-sm border border-slate-200">
-        <h3 class="font-bold text-sm text-slate-700 mb-3">Daftar Rencana Anggaran</h3>
-        <div id="proposal-list" class="space-y-2 text-sm">
-          <!-- Item diisi via JS -->
-        </div>
-        <div class="mt-4 pt-3 border-t flex justify-between font-bold text-slate-800">
-          <span>Total Rencana:</span>
-          <span id="prop-total" class="text-indigo-600">Rp0</span>
-        </div>
-        <button onclick="analyzeProposalAI()" class="w-full mt-4 bg-purple-600 hover:bg-purple-700 text-white font-semibold py-2.5 rounded-xl text-sm flex items-center justify-center gap-2">
-          <i class="fa-solid fa-wand-magic-sparkles"></i> Analisis Proposal dengan AI
+        <button onclick="analyzeProposalAI()" class="w-full bg-purple-600 hover:bg-purple-700 text-white font-semibold py-2.5 rounded-xl text-xs flex items-center justify-center gap-2">
+          <i class="fa-solid fa-wand-magic-sparkles"></i> Analisis RAB dengan AI
         </button>
-      </div>
 
-      <!-- Box Hasil AI Proposal -->
-      <div id="ai-proposal-box" class="hidden bg-purple-50 p-4 rounded-2xl border border-purple-200 text-purple-900 text-xs leading-relaxed space-y-2">
-        <div class="font-bold text-sm flex items-center gap-2 text-purple-800">
-          <i class="fa-solid fa-robot"></i> Catatan Evaluasi AI:
+        <!-- Box AI RAB -->
+        <div id="ai-proposal-box" class="hidden bg-purple-50 p-3.5 rounded-xl border border-purple-200 text-purple-900 text-xs leading-relaxed space-y-1">
+          <div class="font-bold flex items-center gap-1.5 text-purple-800">
+            <i class="fa-solid fa-robot"></i> Catatan Evaluasi RAB AI:
+          </div>
+          <div id="ai-proposal-text">Menganalisis...</div>
         </div>
-        <div id="ai-proposal-text">Menganalisis...</div>
       </div>
     </section>
 
-    <!-- TAB 2: TRANSAKSI HARIAN & PENGINGAT BUDGET -->
+    <!-- TAB 2: HARIAN & BUKU KAS REALISASI -->
     <section id="sec-daily" class="tab-content space-y-4 hidden">
-      <!-- Form Input Harian -->
-      <div class="bg-white p-4 rounded-2xl shadow-sm border border-slate-200">
-        <h2 class="font-bold text-lg text-indigo-900 mb-3"><i class="fa-solid fa-pen-to-square text-indigo-600 mr-2"></i>Catat Transaksi</h2>
+      <!-- Input Transaksi Realisasi -->
+      <div class="bg-white p-4 rounded-2xl shadow-sm border border-slate-200 space-y-3">
+        <h2 class="font-bold text-base text-indigo-900"><i class="fa-solid fa-pen-to-square text-indigo-600 mr-2"></i>Catat Transaksi Realisasi</h2>
         <form onsubmit="addTransaction(event)" class="space-y-3">
           <div class="grid grid-cols-2 gap-2">
             <div>
-              <label class="text-xs font-semibold text-slate-600">Jenis</label>
-              <select id="tx-type" class="w-full p-2.5 text-sm border border-slate-300 rounded-xl focus:ring-2 focus:ring-indigo-500 outline-none">
+              <label class="text-[11px] font-semibold text-slate-600">Jenis Transaksi</label>
+              <select id="tx-type" class="w-full p-2.5 text-xs border border-slate-300 rounded-xl outline-none focus:ring-2 focus:ring-indigo-500">
                 <option value="Pengeluaran">Pengeluaran</option>
-                <option value="Pemasukan">Pemasukan</option>
+                <option value="Pemasukan">Pemasukan (Luar Gaji)</option>
               </select>
             </div>
             <div>
-              <label class="text-xs font-semibold text-slate-600">Kategori</label>
-              <select id="tx-cat" class="w-full p-2.5 text-sm border border-slate-300 rounded-xl focus:ring-2 focus:ring-indigo-500 outline-none">
+              <label class="text-[11px] font-semibold text-slate-600">Kategori</label>
+              <select id="tx-cat" class="w-full p-2.5 text-xs border border-slate-300 rounded-xl outline-none focus:ring-2 focus:ring-indigo-500">
                 <option value="Makanan">Makanan</option>
                 <option value="Transportasi">Transportasi</option>
                 <option value="Tagihan">Tagihan</option>
                 <option value="Gaya Hidup">Gaya Hidup</option>
-                <option value="Pemasukan">Gaji / Pemasukan</option>
+                <option value="Pemasukan">Pemasukan</option>
                 <option value="Lainnya">Lainnya</option>
               </select>
             </div>
           </div>
           <div>
-            <label class="text-xs font-semibold text-slate-600">Nominal (Rp)</label>
-            <input type="number" id="tx-amount" placeholder="25000" required class="w-full p-2.5 text-sm border border-slate-300 rounded-xl focus:ring-2 focus:ring-indigo-500 outline-none">
+            <label class="text-[11px] font-semibold text-slate-600">Nominal (Rp)</label>
+            <input type="number" id="tx-amount" placeholder="25000" required class="w-full p-2.5 text-xs border border-slate-300 rounded-xl outline-none focus:ring-2 focus:ring-indigo-500">
           </div>
           <div>
-            <label class="text-xs font-semibold text-slate-600">Catatan</label>
-            <input type="text" id="tx-note" placeholder="Beli Nasi Goreng" class="w-full p-2.5 text-sm border border-slate-300 rounded-xl focus:ring-2 focus:ring-indigo-500 outline-none">
+            <label class="text-[11px] font-semibold text-slate-600">Keterangan Catatan</label>
+            <input type="text" id="tx-note" placeholder="Beli Nasi Goreng" class="w-full p-2.5 text-xs border border-slate-300 rounded-xl outline-none focus:ring-2 focus:ring-indigo-500">
           </div>
-          <button type="submit" class="w-full bg-indigo-600 hover:bg-indigo-700 text-white font-semibold py-2.5 rounded-xl text-sm transition">
-            Simpan Transaksi
+          <button type="submit" class="w-full bg-indigo-600 hover:bg-indigo-700 text-white font-semibold py-2.5 rounded-xl text-xs transition">
+            Simpan Transaksi Realisasi
           </button>
         </form>
       </div>
 
-      <!-- Status Pengingat Budget (Warning System) -->
+      <!-- Status Anggaran Realisasi vs RAB -->
       <div class="bg-white p-4 rounded-2xl shadow-sm border border-slate-200">
-        <h3 class="font-bold text-sm text-slate-700 mb-3"><i class="fa-solid fa-triangle-exclamation text-amber-500 mr-2"></i>Status Batas Anggaran</h3>
-        <div id="budget-status-list" class="space-y-3">
-          <!-- Status Budget Render JS -->
+        <h3 class="font-bold text-xs text-slate-700 mb-3"><i class="fa-solid fa-triangle-exclamation text-amber-500 mr-2"></i>Status Batas Anggaran Realisasi vs RAB</h3>
+        <div id="budget-status-list" class="space-y-2.5"></div>
+      </div>
+
+      <!-- Buku Kas Transaksi (Tabel Transaksi Harian) -->
+      <div class="bg-white p-4 rounded-2xl shadow-sm border border-slate-200 space-y-3">
+        <h3 class="font-bold text-xs text-slate-700"><i class="fa-solid fa-book-open text-indigo-600 mr-2"></i>Buku Kas Transaksi Bulanan</h3>
+        <div class="overflow-x-auto">
+          <table class="w-full text-left text-[11px] border-collapse">
+            <thead>
+              <tr class="bg-slate-100 text-slate-600 border-b border-slate-200">
+                <th class="p-2">Tgl</th>
+                <th class="p-2">Keterangan</th>
+                <th class="p-2">Jenis</th>
+                <th class="p-2 text-right">Nominal</th>
+                <th class="p-2 text-center">Aksi</th>
+              </tr>
+            </thead>
+            <tbody id="tx-table-body" class="divide-y divide-slate-100">
+              <!-- JS Render -->
+            </tbody>
+          </table>
         </div>
       </div>
 
-      <!-- Riwayat Transaksi -->
-      <div class="bg-white p-4 rounded-2xl shadow-sm border border-slate-200">
-        <h3 class="font-bold text-sm text-slate-700 mb-3">Riwayat Transaksi Harian</h3>
-        <div id="tx-history-list" class="space-y-2 text-sm max-h-60 overflow-y-auto">
-          <!-- List JS -->
+      <!-- Rekap Kas Realisasi -->
+      <div class="bg-white p-4 rounded-2xl shadow-sm border border-slate-200 space-y-2 text-xs">
+        <h3 class="font-bold text-slate-700 mb-2"><i class="fa-solid fa-calculator text-indigo-600 mr-1.5"></i>Rekap Realisasi Kas Bulanan</h3>
+        <div class="flex justify-between">
+          <span class="text-slate-600">Total Pemasukan Realisasi:</span>
+          <span id="recap-real-income" class="font-bold text-emerald-600">+Rp0</span>
+        </div>
+        <div class="flex justify-between">
+          <span class="text-slate-600">Total Pengeluaran Realisasi:</span>
+          <span id="recap-real-expense" class="font-bold text-rose-600">-Rp0</span>
+        </div>
+        <div class="border-t pt-2 flex justify-between font-bold text-slate-800 text-sm">
+          <span>Sisa Saldo Kas (Cashflow Real):</span>
+          <span id="recap-real-balance" class="text-indigo-600">Rp0</span>
         </div>
       </div>
     </section>
 
-    <!-- TAB 3: MENU TABUNGAN -->
+    <!-- TAB 3: TABUNGAN -->
     <section id="sec-savings" class="tab-content space-y-4 hidden">
-      <div class="bg-white p-4 rounded-2xl shadow-sm border border-slate-200">
-        <h2 class="font-bold text-lg text-indigo-900 mb-3"><i class="fa-solid fa-piggy-bank text-indigo-600 mr-2"></i>Target Tabungan</h2>
+      <div class="bg-white p-4 rounded-2xl shadow-sm border border-slate-200 space-y-3">
+        <h2 class="font-bold text-base text-indigo-900"><i class="fa-solid fa-piggy-bank text-indigo-600 mr-2"></i>Target Tabungan</h2>
+        
+        <div class="bg-emerald-50 p-3 rounded-xl border border-emerald-200 text-xs flex justify-between items-center">
+          <span class="text-slate-600">Sisa Saldo Kas Realisasi Siap Ditabung:</span>
+          <span id="savings-available-cash" class="font-bold text-emerald-700">Rp0</span>
+        </div>
+
         <form onsubmit="addSavingGoal(event)" class="space-y-3">
           <div>
-            <label class="text-xs font-semibold text-slate-600">Nama Target</label>
-            <input type="text" id="save-title" placeholder="Misal: Dana Darurat / HP Baru" required class="w-full p-2.5 text-sm border border-slate-300 rounded-xl focus:ring-2 focus:ring-indigo-500 outline-none">
+            <label class="text-[11px] font-semibold text-slate-600">Nama Pos Tabungan</label>
+            <input type="text" id="save-title" placeholder="Misal: Dana Darurat / HP Baru" required class="w-full p-2.5 text-xs border border-slate-300 rounded-xl outline-none focus:ring-2 focus:ring-indigo-500">
           </div>
           <div>
-            <label class="text-xs font-semibold text-slate-600">Target Nominal (Rp)</label>
-            <input type="number" id="save-target" placeholder="5000000" required class="w-full p-2.5 text-sm border border-slate-300 rounded-xl focus:ring-2 focus:ring-indigo-500 outline-none">
+            <label class="text-[11px] font-semibold text-slate-600">Target Nominal (Rp)</label>
+            <input type="number" id="save-target" placeholder="5000000" required class="w-full p-2.5 text-xs border border-slate-300 rounded-xl outline-none focus:ring-2 focus:ring-indigo-500">
           </div>
-          <button type="submit" class="w-full bg-emerald-600 hover:bg-emerald-700 text-white font-semibold py-2.5 rounded-xl text-sm transition">
-            + Buat Target Tabungan
+          <button type="submit" class="w-full bg-emerald-600 hover:bg-emerald-700 text-white font-semibold py-2.5 rounded-xl text-xs transition">
+            + Buat Pos Tabungan
           </button>
         </form>
       </div>
 
-      <!-- List Tabungan -->
-      <div id="savings-list" class="space-y-3">
-        <!-- JS Render -->
-      </div>
+      <div id="savings-list" class="space-y-3"></div>
     </section>
 
-    <!-- TAB 4: GRAFIK & ANALISIS AKHIR BULAN AI -->
+    <!-- TAB 4: LAPORAN & EVALUASI AI -->
     <section id="sec-report" class="tab-content space-y-4 hidden">
-      <!-- Rangkuman Cashflow -->
       <div class="grid grid-cols-2 gap-3">
         <div class="bg-emerald-50 border border-emerald-200 p-3 rounded-2xl">
-          <p class="text-xs text-emerald-600 font-medium">Pemasukan</p>
-          <p id="total-income-txt" class="text-base font-bold text-emerald-700">Rp0</p>
+          <p class="text-[11px] text-emerald-600 font-medium">Pemasukan Realisasi</p>
+          <p id="rep-income-txt" class="text-sm font-bold text-emerald-700">Rp0</p>
         </div>
         <div class="bg-rose-50 border border-rose-200 p-3 rounded-2xl">
-          <p class="text-xs text-rose-600 font-medium">Pengeluaran</p>
-          <p id="total-expense-txt" class="text-base font-bold text-rose-700">Rp0</p>
+          <p class="text-[11px] text-rose-600 font-medium">Pengeluaran Realisasi</p>
+          <p id="rep-expense-txt" class="text-sm font-bold text-rose-700">Rp0</p>
         </div>
       </div>
 
-      <!-- Chart visualisasi -->
       <div class="bg-white p-4 rounded-2xl shadow-sm border border-slate-200">
-        <h3 class="font-bold text-sm text-slate-700 mb-3"><i class="fa-solid fa-chart-pie mr-2 text-indigo-600"></i>Grafik Pengeluaran per Kategori</h3>
-        <div class="w-full max-w-[250px] mx-auto">
+        <h3 class="font-bold text-xs text-slate-700 mb-3"><i class="fa-solid fa-chart-pie mr-2 text-indigo-600"></i>Grafik Pengeluaran per Kategori</h3>
+        <div class="w-full max-w-[220px] mx-auto">
           <canvas id="expenseChart"></canvas>
         </div>
       </div>
 
-      <!-- Analisis AI Evaluasi Akhir Bulan -->
       <div class="bg-white p-4 rounded-2xl shadow-sm border border-slate-200 space-y-3">
-        <h3 class="font-bold text-sm text-slate-700"><i class="fa-solid fa-brain text-purple-600 mr-2"></i>Evaluasi AI Akhir Bulan</h3>
-        <button onclick="analyzeMonthlyAI()" class="w-full bg-purple-600 hover:bg-purple-700 text-white font-semibold py-2.5 rounded-xl text-sm flex items-center justify-center gap-2">
+        <h3 class="font-bold text-xs text-slate-700"><i class="fa-solid fa-brain text-purple-600 mr-2"></i>Evaluasi AI Akhir Bulan</h3>
+        <button onclick="analyzeMonthlyAI()" class="w-full bg-purple-600 hover:bg-purple-700 text-white font-semibold py-2.5 rounded-xl text-xs flex items-center justify-center gap-2">
           <i class="fa-solid fa-wand-magic-sparkles"></i> Minta Analisis Performa AI
         </button>
-        <div id="ai-monthly-box" class="hidden bg-purple-50 p-4 rounded-xl border border-purple-200 text-purple-900 text-xs leading-relaxed">
+        <div id="ai-monthly-box" class="hidden bg-purple-50 p-3.5 rounded-xl border border-purple-200 text-purple-900 text-xs leading-relaxed">
           <div id="ai-monthly-text">Memproses evaluasi...</div>
         </div>
       </div>
@@ -210,9 +277,9 @@
   <!-- Modal API Key -->
   <div id="api-modal" class="fixed inset-0 bg-black/50 hidden items-center justify-center p-4 z-50">
     <div class="bg-white rounded-2xl p-5 w-full max-w-sm space-y-4">
-      <h3 class="font-bold text-slate-800 text-base"><i class="fa-solid fa-key text-indigo-600 mr-2"></i>Pengaturan Gemini API Key</h3>
-      <p class="text-xs text-slate-500">Masukkan API Key Google Gemini gratis milikmu untuk mengaktifkan fitur analisis AI.</p>
-      <input type="password" id="api-key-input" placeholder="AIzaSy..." class="w-full p-2.5 text-sm border border-slate-300 rounded-xl outline-none focus:ring-2 focus:ring-indigo-500">
+      <h3 class="font-bold text-slate-800 text-sm"><i class="fa-solid fa-key text-indigo-600 mr-2"></i>Pengaturan Gemini API Key</h3>
+      <p class="text-xs text-slate-500">Masukkan API Key Google Gemini gratis milikmu untuk mengaktifkan analisis AI.</p>
+      <input type="password" id="api-key-input" placeholder="AIzaSy..." class="w-full p-2.5 text-xs border border-slate-300 rounded-xl outline-none focus:ring-2 focus:ring-indigo-500">
       <div class="flex gap-2 justify-end">
         <button onclick="closeApiKeyModal()" class="px-4 py-2 text-xs font-semibold text-slate-500">Batal</button>
         <button onclick="saveApiKey()" class="px-4 py-2 text-xs font-semibold bg-indigo-600 text-white rounded-xl">Simpan</button>
@@ -220,10 +287,10 @@
     </div>
   </div>
 
-  <!-- SCRIPT UTAMA & LOGIKA SISTEM -->
   <script>
-    // --- DATABASE LOKAL (AUTOMATIC IN-BROWSER DATABASE) ---
+    // --- DATABASE LOKAL ---
     let db = {
+      salary: JSON.parse(localStorage.getItem('db_salary')) || { pokok: 0, staff: 0, walikelas: 0, lain: 0 },
       proposals: JSON.parse(localStorage.getItem('db_proposals')) || [],
       transactions: JSON.parse(localStorage.getItem('db_transactions')) || [],
       savings: JSON.parse(localStorage.getItem('db_savings')) || [],
@@ -231,15 +298,15 @@
     };
 
     function saveDB() {
+      localStorage.setItem('db_salary', JSON.stringify(db.salary));
       localStorage.setItem('db_proposals', JSON.stringify(db.proposals));
       localStorage.setItem('db_transactions', JSON.stringify(db.transactions));
       localStorage.setItem('db_savings', JSON.stringify(db.savings));
     }
 
-    // --- CHART INSTANCE ---
     let chartInstance = null;
 
-    // --- TAB SWITCHING LOGIC ---
+    // --- TAB SWITCHING ---
     function switchTab(tabName) {
       document.querySelectorAll('.tab-content').forEach(el => el.classList.add('hidden'));
       document.querySelectorAll('.tab-btn').forEach(el => {
@@ -252,12 +319,25 @@
       activeBtn.classList.add('bg-indigo-600', 'text-white');
       activeBtn.classList.remove('text-slate-600');
 
+      if (tabName === 'proposal') renderProposalTab();
       if (tabName === 'daily') renderDailyTab();
       if (tabName === 'savings') renderSavingsTab();
       if (tabName === 'report') renderReportTab();
     }
 
-    // --- TAB 1: PROPOSAL LOGIC ---
+    // --- TAB 1: LOGIKA RAB 1 BULAN ---
+    function saveSalaryEstimate(e) {
+      e.preventDefault();
+      db.salary.pokok = parseFloat(document.getElementById('sal-pokok').value) || 0;
+      db.salary.staff = parseFloat(document.getElementById('sal-staff').value) || 0;
+      db.salary.walikelas = parseFloat(document.getElementById('sal-walikelas').value) || 0;
+      db.salary.lain = parseFloat(document.getElementById('sal-lain').value) || 0;
+      
+      saveDB();
+      renderProposalTab();
+      alert('Estimasi gaji berhasil disimpan!');
+    }
+
     function addProposalItem(e) {
       e.preventDefault();
       const name = document.getElementById('prop-item').value;
@@ -268,19 +348,33 @@
       saveDB();
       document.getElementById('prop-item').value = '';
       document.getElementById('prop-limit').value = '';
-      renderProposalList();
+      renderProposalTab();
     }
 
-    function renderProposalList() {
+    function deleteProposal(id) {
+      db.proposals = db.proposals.filter(p => p.id !== id);
+      saveDB();
+      renderProposalTab();
+    }
+
+    function renderProposalTab() {
+      // Set input values
+      document.getElementById('sal-pokok').value = db.salary.pokok || '';
+      document.getElementById('sal-staff').value = db.salary.staff || '';
+      document.getElementById('sal-walikelas').value = db.salary.walikelas || '';
+      document.getElementById('sal-lain').value = db.salary.lain || '';
+
+      const totalSalary = (db.salary.pokok || 0) + (db.salary.staff || 0) + (db.salary.walikelas || 0) + (db.salary.lain || 0);
+
       const container = document.getElementById('proposal-list');
       container.innerHTML = '';
-      let total = 0;
+      let totalExpense = 0;
 
       if (db.proposals.length === 0) {
-        container.innerHTML = `<p class="text-slate-400 text-xs italic">Belum ada anggaran diajukan.</p>`;
+        container.innerHTML = `<p class="text-slate-400 text-xs italic">Belum ada item rancangan pengeluaran.</p>`;
       } else {
         db.proposals.forEach(p => {
-          total += p.limit;
+          totalExpense += p.limit;
           container.innerHTML += `
             <div class="flex justify-between items-center p-2 bg-slate-50 rounded-lg border border-slate-100">
               <div>
@@ -295,16 +389,14 @@
           `;
         });
       }
-      document.getElementById('prop-total').innerText = `Rp${total.toLocaleString('id-ID')}`;
+
+      const balance = totalSalary - totalExpense;
+      document.getElementById('rab-total-income').innerText = `Rp${totalSalary.toLocaleString('id-ID')}`;
+      document.getElementById('rab-total-expense').innerText = `-Rp${totalExpense.toLocaleString('id-ID')}`;
+      document.getElementById('rab-balance').innerText = `Rp${balance.toLocaleString('id-ID')}`;
     }
 
-    function deleteProposal(id) {
-      db.proposals = db.proposals.filter(p => p.id !== id);
-      saveDB();
-      renderProposalList();
-    }
-
-    // --- TAB 2: DAILY TRANSACTIONS & BUDGET CHECK ---
+    // --- TAB 2: LOGIKA HARIAN & BUKU KAS REALISASI ---
     function addTransaction(e) {
       e.preventDefault();
       const type = document.getElementById('tx-type').value;
@@ -319,27 +411,60 @@
       renderDailyTab();
     }
 
+    function deleteTransaction(id) {
+      db.transactions = db.transactions.filter(t => t.id !== id);
+      saveDB();
+      renderDailyTab();
+    }
+
     function renderDailyTab() {
-      // Render History
-      const histContainer = document.getElementById('tx-history-list');
-      histContainer.innerHTML = '';
-      
+      // 1. Render Table Buku Kas
+      const tbody = document.getElementById('tx-table-body');
+      tbody.innerHTML = '';
+
+      let realIncome = (db.salary.pokok || 0) + (db.salary.staff || 0) + (db.salary.walikelas || 0) + (db.salary.lain || 0);
+      let realExpense = 0;
+
+      // Baris Otomatis Pemasukan Gaji Awal
+      if (realIncome > 0) {
+        tbody.innerHTML += `
+          <tr class="bg-emerald-50/50">
+            <td class="p-2 text-slate-400">Awal</td>
+            <td class="p-2 font-medium">Gaji Bulanan (Pokok/Staff/dll)</td>
+            <td class="p-2 text-emerald-600 font-semibold">Masuk</td>
+            <td class="p-2 text-right font-bold text-emerald-600">+Rp${realIncome.toLocaleString('id-ID')}</td>
+            <td class="p-2 text-center text-slate-300">-</td>
+          </tr>
+        `;
+      }
+
       [...db.transactions].reverse().forEach(t => {
         const isExp = t.type === 'Pengeluaran';
-        histContainer.innerHTML += `
-          <div class="flex justify-between items-center p-2 border-b border-slate-100">
-            <div>
-              <p class="font-medium text-slate-700">${t.note} <span class="text-[10px] text-slate-400">(${t.category})</span></p>
-              <p class="text-[10px] text-slate-400">${t.date}</p>
-            </div>
-            <span class="font-bold ${isExp ? 'text-rose-600' : 'text-emerald-600'}">
+        if (isExp) realExpense += t.amount;
+        else realIncome += t.amount;
+
+        tbody.innerHTML += `
+          <tr>
+            <td class="p-2 text-slate-500">${t.date}</td>
+            <td class="p-2 font-medium text-slate-700">${t.note} <span class="text-[9px] text-slate-400">(${t.category})</span></td>
+            <td class="p-2 ${isExp ? 'text-rose-600' : 'text-emerald-600'} font-semibold">${isExp ? 'Keluar' : 'Masuk'}</td>
+            <td class="p-2 text-right font-bold ${isExp ? 'text-rose-600' : 'text-emerald-600'}">
               ${isExp ? '-' : '+'}Rp${t.amount.toLocaleString('id-ID')}
-            </span>
-          </div>
+            </td>
+            <td class="p-2 text-center">
+              <button onclick="deleteTransaction(${t.id})" class="text-rose-500"><i class="fa-solid fa-trash"></i></button>
+            </td>
+          </tr>
         `;
       });
 
-      // Render Budget Warning Status
+      // 2. Rekap Realisasi
+      const balance = realIncome - realExpense;
+      document.getElementById('recap-real-income').innerText = `+Rp${realIncome.toLocaleString('id-ID')}`;
+      document.getElementById('recap-real-expense').innerText = `-Rp${realExpense.toLocaleString('id-ID')}`;
+      document.getElementById('recap-real-balance').innerText = `Rp${balance.toLocaleString('id-ID')}`;
+
+      // 3. Status Anggaran Realisasi vs RAB
       const statusContainer = document.getElementById('budget-status-list');
       statusContainer.innerHTML = '';
 
@@ -369,21 +494,21 @@
         }
 
         statusContainer.innerHTML += `
-          <div class="space-y-1">
-            <div class="flex justify-between text-xs">
+          <div class="space-y-1 text-xs">
+            <div class="flex justify-between">
               <span class="font-semibold text-slate-700">${p.category} (${p.name})</span>
               <span class="px-2 py-0.5 rounded-full text-[10px] ${badgeColor}">${badge} (${pct}%)</span>
             </div>
             <div class="w-full bg-slate-100 h-2 rounded-full overflow-hidden">
               <div class="${barColor} h-full" style="width: ${pct}%"></div>
             </div>
-            <p class="text-[10px] text-slate-400 text-right">Terpakai: Rp${spent.toLocaleString('id-ID')} / Rp${p.limit.toLocaleString('id-ID')}</p>
+            <p class="text-[10px] text-slate-400 text-right">Terpakai: Rp${spent.toLocaleString('id-ID')} / RAB: Rp${p.limit.toLocaleString('id-ID')}</p>
           </div>
         `;
       });
     }
 
-    // --- TAB 3: SAVINGS LOGIC ---
+    // --- TAB 3: LOGIKA TABUNGAN ---
     function addSavingGoal(e) {
       e.preventDefault();
       const title = document.getElementById('save-title').value;
@@ -397,7 +522,7 @@
     }
 
     function depositSaving(id) {
-      const amt = prompt('Masukkan nominal tabungan tambahan (Rp):');
+      const amt = prompt('Masukkan nominal tabungan dari sisa saldo (Rp):');
       if (amt && !isNaN(amt)) {
         const item = db.savings.find(s => s.id === id);
         if (item) {
@@ -409,6 +534,14 @@
     }
 
     function renderSavingsTab() {
+      let realIncome = (db.salary.pokok || 0) + (db.salary.staff || 0) + (db.salary.walikelas || 0) + (db.salary.lain || 0);
+      db.transactions.forEach(t => {
+        if (t.type === 'Pemasukan') realIncome += t.amount;
+        if (t.type === 'Pengeluaran') realIncome -= t.amount;
+      });
+
+      document.getElementById('savings-available-cash').innerText = `Rp${Math.max(0, realIncome).toLocaleString('id-ID')}`;
+
       const container = document.getElementById('savings-list');
       container.innerHTML = '';
 
@@ -422,15 +555,15 @@
         container.innerHTML += `
           <div class="bg-white p-4 rounded-2xl shadow-sm border border-slate-200 space-y-2">
             <div class="flex justify-between items-center">
-              <h4 class="font-bold text-sm text-slate-800">${s.title}</h4>
-              <button onclick="depositSaving(${s.id})" class="text-xs bg-emerald-600 hover:bg-emerald-700 text-white px-2.5 py-1 rounded-lg">
+              <h4 class="font-bold text-xs text-slate-800">${s.title}</h4>
+              <button onclick="depositSaving(${s.id})" class="text-[11px] bg-emerald-600 hover:bg-emerald-700 text-white px-2.5 py-1 rounded-lg">
                 + Menabung
               </button>
             </div>
-            <div class="w-full bg-slate-100 h-2.5 rounded-full overflow-hidden">
+            <div class="w-full bg-slate-100 h-2 rounded-full overflow-hidden">
               <div class="bg-emerald-500 h-full" style="width: ${pct}%"></div>
             </div>
-            <div class="flex justify-between text-xs text-slate-500">
+            <div class="flex justify-between text-[11px] text-slate-500">
               <span>Terkumpul: <b>Rp${s.current.toLocaleString('id-ID')}</b></span>
               <span>Target: Rp${s.target.toLocaleString('id-ID')} (${pct}%)</span>
             </div>
@@ -439,15 +572,19 @@
       });
     }
 
-    // --- TAB 4: REPORT & CHART LOGIC ---
+    // --- TAB 4: LAPORAN & CHART ---
     function renderReportTab() {
-      const income = db.transactions.filter(t => t.type === 'Pemasukan').reduce((sum, t) => sum + t.amount, 0);
-      const expense = db.transactions.filter(t => t.type === 'Pengeluaran').reduce((sum, t) => sum + t.amount, 0);
+      let realIncome = (db.salary.pokok || 0) + (db.salary.staff || 0) + (db.salary.walikelas || 0) + (db.salary.lain || 0);
+      let realExpense = 0;
 
-      document.getElementById('total-income-txt').innerText = `Rp${income.toLocaleString('id-ID')}`;
-      document.getElementById('total-expense-txt').innerText = `Rp${expense.toLocaleString('id-ID')}`;
+      db.transactions.forEach(t => {
+        if (t.type === 'Pemasukan') realIncome += t.amount;
+        if (t.type === 'Pengeluaran') realExpense += t.amount;
+      });
 
-      // Group Expense by Category
+      document.getElementById('rep-income-txt').innerText = `Rp${realIncome.toLocaleString('id-ID')}`;
+      document.getElementById('rep-expense-txt').innerText = `Rp${realExpense.toLocaleString('id-ID')}`;
+
       const categories = ['Makanan', 'Transportasi', 'Tagihan', 'Gaya Hidup', 'Lainnya'];
       const expData = categories.map(cat => {
         return db.transactions
@@ -455,7 +592,6 @@
           .reduce((sum, t) => sum + t.amount, 0);
       });
 
-      // Render Chart
       const ctx = document.getElementById('expenseChart').getContext('2d');
       if (chartInstance) chartInstance.destroy();
 
@@ -475,7 +611,7 @@
       });
     }
 
-    // --- GEMINI AI INTEGRATION ---
+    // --- INTEGRASI GEMINI AI (MODEL GEMINI-3.8-FLASH) ---
     async function callGemini(promptText) {
       if (!db.apiKey) {
         openApiKeyModal();
@@ -493,7 +629,6 @@
 
         const data = await res.json();
 
-        // KONTROL HANDLING ERROR JIKA DITOLAK GOOGLE / API KEY SALAH
         if (!res.ok) {
           return `Error dari Google (${res.status}): ${data.error?.message || 'API Key tidak valid'}`;
         }
@@ -512,11 +647,12 @@
       const box = document.getElementById('ai-proposal-box');
       const txt = document.getElementById('ai-proposal-text');
       box.classList.remove('hidden');
-      txt.innerText = 'AI sedang meninjau proposal anggaranmu...';
+      txt.innerText = 'AI sedang meninjau rancangan RAB kamu...';
 
-      const prompt = `Saya membuat rancangan proposal anggaran bulanan berikut:\n` +
-        JSON.stringify(db.proposals) + 
-        `\nBerikan ulasan singkat (3 kalimat) dalam bahasa Indonesia: Apakah alokasi ini realistis dan sehat secara finansial?`;
+      const prompt = `Data Rancangan Anggaran Bulanan (RAB):\n` +
+        `Estimasi Gaji Masuk: ` + JSON.stringify(db.salary) + `\n` +
+        `Item Rancangan Pengeluaran: ` + JSON.stringify(db.proposals) + 
+        `\nBerikan ulasan singkat (3 kalimat) dalam bahasa Indonesia: Apakah rasio anggaran ini sehat dan aman untuk bulan depan?`;
 
       const result = await callGemini(prompt);
       txt.innerText = result;
@@ -526,11 +662,11 @@
       const box = document.getElementById('ai-monthly-box');
       const txt = document.getElementById('ai-monthly-text');
       box.classList.remove('hidden');
-      txt.innerText = 'AI sedang mengevaluasi pengeluaran bulananmu...';
+      txt.innerText = 'AI sedang mengevaluasi realisasi kas bulananmu...';
 
-      const prompt = `Data proposal awal bulan:\n` + JSON.stringify(db.proposals) +
-        `\nData realisasi transaksi harian:\n` + JSON.stringify(db.transactions) +
-        `\nBerikan evaluasi akhir bulan dalam 1 paragraf: Berapa persen tingkat kedisiplinan saya, kategori mana yang boros dibanding rencana, dan 1 saran praktis untuk bulan depan.`;
+      const prompt = `Rancangan RAB Awal: ` + JSON.stringify(db.proposals) +
+        `\nRealisasi Transaksi Kas: ` + JSON.stringify(db.transactions) +
+        `\nBerikan evaluasi akhir bulan dalam 1 paragraf ringkas: Berapa persen kedisiplinan pengeluaran dibanding RAB, pos mana yang paling membengkak, dan 1 saran finansial praktis.`;
 
       const result = await callGemini(prompt);
       txt.innerText = result;
@@ -556,7 +692,7 @@
     }
 
     // Init App
-    renderProposalList();
+    renderProposalTab();
   </script>
 </body>
 </html>
