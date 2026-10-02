@@ -490,10 +490,21 @@
             contents: [{ parts: [{ text: promptText }] }]
           })
         });
+
         const data = await res.json();
-        return data.candidates[0].content.parts[0].text;
+
+        // KONTROL HANDLING ERROR JIKA DITOLAK GOOGLE / API KEY SALAH
+        if (!res.ok) {
+          return `Error dari Google (${res.status}): ${data.error?.message || 'API Key tidak valid'}`;
+        }
+
+        if (data.candidates && data.candidates[0]?.content?.parts[0]?.text) {
+          return data.candidates[0].content.parts[0].text;
+        } else {
+          return "Format balasan AI tidak sesuai.";
+        }
       } catch (err) {
-        return "Gagal terhubung ke Gemini API. Pastikan API Key kamu benar dan terhubung internet.";
+        return "Gagal terhubung ke internet/server. Periksa koneksi HP kamu.";
       }
     }
 
